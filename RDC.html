@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کوین RDC | معرفی و مدیریت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #ff5722;
+            --text-color: #333;
+            --light-gray: #f5f5f5;
+            --white: #fff;
+            --success-color: #4CAF50;
+            --danger-color: #F44336;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+        }
+        
+        /* استایل هدر */
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            display: block;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--white);
+        }
+        
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+        
+        /* استایل بخش‌های اصلی */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .coin-info {
+            background-color: var(--white);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* استایل چارت‌ها */
+        .chart-container {
+            margin: 30px 0;
+            background: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .chart-frame {
+            width: 100%;
+            height: 500px;
+            border: none;
+            margin-top: 20px;
+        }
+        
+        .price-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .price-card {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 15px 25px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 200px;
+            margin: 10px;
+        }
+        
+        .price-up { color: var(--success-color); }
+        .price-down { color: var(--danger-color); }
+        
+        /* استایل پنل مدیریت */
+        .admin-panel {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .admin-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            z-index: 1000;
+        }
+        
+        /* استایل سیستم لاگین */
+        .login-system {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .login-box {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            width: 400px;
+            max-width: 90%;
+        }
+        
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .btn {
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #0d47a1;
+        }
+        
+        /* استایل بخش پشتیبانی */
+        .support-section {
+            background-color: var(--white);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .support-methods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .support-card {
+            flex: 1;
+            min-width: 250px;
+            background: var(--light-gray);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .support-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .support-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        /* استایل چت آنلاین */
+        .chat-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+        
+        .chat-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chat-box {
+            display: none;
+            width: 350px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .chat-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-messages {
+            height: 300px;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f9f9f9;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+        
+        .chat-input button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        /* استایل صفحه لاگین پشتیبان */
+        .support-login {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* استایل پنل پشتیبان */
+        .support-panel {
+            display: none;
+            margin: 30px auto;
+            max-width: 1200px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .ticket-list {
+            margin-top: 20px;
+        }
+        
+        .ticket {
+            padding: 15px;
+            border: 1px solid #eee;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .ticket:hover {
+            background: #f5f5f5;
+        }
+        
+        .ticket-status {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .status-new {
+            background: #ffeb3b;
+        }
+        
+        .status-pending {
+            background: #2196f3;
+            color: white;
+        }
+        
+        .status-resolved {
+            background: #4caf50;
+            color: white;
+        }
+        
+        /* استایل صفحه انتخاب پنل */
+        .panel-selector {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .panel-card {
+            width: 300px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .panel-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .panel-icon {
+            font-size: 3rem;
+            color: #1a237e;
+            margin-bottom: 20px;
+        }
+        
+        /* استایل واکنشگرا */
+        @media (max-width: 768px) {
+            .price-card, .support-card {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .chat-box {
+                width: 300px;
+            }
+            
+            .panel-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- هدر سایت با لوگوی base64 -->
+    <header>
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wgARCAQABAADASIAAhEBAxEB/8QAGgABAAIDAQAAAAAAAAAAAAAAAAQFAQMGAv/EABgBAQEBAQEAAAAAAAAAAAAAAAADAgEE/9oADAMBAAIQAxAAAAKmG8A" alt="لوگو RDC" class="logo">
+        <div class="container">
+            <h1>کوین RDC (RidrCoin)</h1>
+            <p>ارز دیجیتال هوشمند مبتنی بر هوش مصنوعی و بلاکچین</p>
+        </div>
+    </header>
+
+    <!-- محتوای اصلی -->
+    <div class="container">
+        <!-- بخش معرفی -->
+        <section class="coin-info">
+            <h2>معرفی کوین RDC</h2>
+            <p>RidrCoin یک ارز دیجیتال پیشرفته مبتنی بر شبکه BNB Smart Chain است که فناوری هوش مصنوعی (AI) و تکنولوژی‌های غیرمتمرکز را برای ارائه راهکارهای هوشمند و امن در دنیای بلاکچین ترکیب می‌کند.</p>
+            
+            <h3>ویژگی‌های کلیدی:</h3>
+            <ul>
+                <li><strong>پشتیبانی کامل از قراردادهای هوشمند AI</strong> - امکان تحلیل داده‌ها و تصمیم‌گیری خودکار</li>
+                <li><strong>هزینه تراکنش بسیار پایین</strong> - به لطف معماری شبکه BNB Smart Chain</li>
+                <li><strong>حکمرانی جامعه‌محور</strong> - مشارکت دارندگان کوین در توسعه پروژه</li>
+                <li><strong>عرضه محدود 10 میلیون توکن</strong> - ایجاد عنصر کمیابی</li>
+                <li><strong>بازار غیرمتمرکز AI</strong> - تبادل امن مدل‌های هوش مصنوعی</li>
+            </ul>
+
+            <h3>اطلاعات فنی:</h3>
+            <p>آدرس قرارداد: <code>0x527939d5c33bD19A7f0b35da399bc1D1d27Fa8e2</code></p>
+            <p>شبکه: BNB Smart Chain (BEP-20)</p>
+        </section>
+
+        <!-- چارت DexScreener -->
+        <section class="chart-container">
+            <h2>رصد لحظه‌ای قیمت RDC از DexScreener</h2>
+            <div class="price-info">
+                <div class="price-card">
+                    <h3>قیمت فعلی</h3>
+                    <p id="dex-price">--</p>
+                </div>
+                <div class="price-card">
+                    <h3>تغییر 24h</h3>
+                    <p id="dex-change">--</p>
+                </div>
+                <div class="price-card">
+                    <h3>حجم معاملات</h3>
+                    <p id="dex-volume">--</p>
+                </div>
+            </div>
+            <iframe
+                src="https://dexscreener.com/ethereum/0x527939d5c33bD19A7f0b35da399bc1D1d27Fa8e2?embed=1&theme=light"
+                class="chart-frame"
+                frameborder="0"
+                allowtransparency="true"
+            ></iframe>
+        </section>
+
+        <!-- چارت Poocoin -->
+        <section class="chart-container">
+            <h2>رصد لحظه‌ای قیمت RDC از Poocoin</h2>
+            <div class="price-info">
+                <div class="price-card">
+                    <h3>قیمت فعلی</h3>
+                    <p id="poo-price">--</p>
+                </div>
+                <div class="price-card">
+                    <h3>تغییر 24h</h3>
+                    <p id="poo-change">--</p>
+                </div>
+                <div class="price-card">
+                    <h3>نقدینگی</h3>
+                    <p id="poo-liquidity">--</p>
+                </div>
+            </div>
+            <iframe
+                src="https://poocoin.app/tokens/0x527939d5c33bD19A7f0b35da399bc1D1d27Fa8e2?embed=1&theme=light"
+                class="chart-frame"
+                frameborder="0"
+                allowtransparency="true"
+            ></iframe>
+        </section>
+
+        <!-- بخش پشتیبانی -->
+        <section class="support-section">
+            <h2>پشتیبانی و ارتباط با ما</h2>
+            <p>برای دریافت راهنمایی و پشتیبانی فنی، می‌توانید از طریق روش‌های زیر با تیم ما در ارتباط باشید:</p>
+            
+            <div class="support-methods">
+                <div class="support-card">
+                    <div class="support-icon">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <h3>تلگرام</h3>
+                    <p>به کانال رسمی ما در تلگرام بپیوندید</p>
+                    <a href="https://t.me/RdcCoin2025" target="_blank" class="btn" style="display: inline-block; margin-top: 10px;">
+                        <i class="fab fa-telegram"></i> عضویت در کانال
+                    </a>
+                </div>
+                
+                <div class="support-card">
+                    <div class="support-icon">
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                    <h3>توییتر (X)</h3>
+                    <p>ما را در توییتر دنبال کنید</p>
+                    <a href="https://x.com/rbc1761602_rbc?s=11" target="_blank" class="btn" style="display: inline-block; margin-top: 10px;">
+                        <i class="fab fa-twitter"></i> دنبال کردن
+                    </a>
+                </div>
+                
+                <div class="support-card">
+                    <div class="support-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>ایمیل</h3>
+                    <p>پشتیبانی از طریق ایمیل</p>
+                    <a href="mailto:ali0773817az@gmail.com" class="btn" style="display: inline-block; margin-top: 10px;">
+                        <i class="fas fa-paper-plane"></i> ارسال ایمیل
+                    </a>
+                </div>
+            </div>
+            
+            <!-- لینک دسترسی پشتیبان -->
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="#" id="supportAccessBtn" style="color: var(--primary-color);">
+                    <i class="fas fa-headset"></i> ورود پشتیبان
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- دکمه دسترسی به پنل مدیریت -->
+    <a href="#" id="adminAccessBtn" class="admin-btn">ورود ادمین</a>
+
+    <!-- سیستم لاگین ادمین -->
+    <div id="loginSystem" class="login-system">
+        <div class="login-box">
+            <h2>ورود به پنل مدیریت</h2>
+            <p id="ip-restriction-message" style="color: var(--danger-color); display: none;">
+                دسترسی فقط از طریق IPهای استان ایلام امکان‌پذیر است
+            </p>
+            <form id="adminLoginForm">
+                <div class="input-group">
+                    <label for="adminUsername">نام کاربری</label>
+                    <input type="text" id="adminUsername" required>
+                </div>
+                <div class="input-group">
+                    <label for="adminPassword">رمز عبور</label>
+                    <input type="password" id="adminPassword" required>
+                </div>
+                <button type="submit" class="btn">ورود</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- پنل مدیریت -->
+    <div id="adminPanel" class="admin-panel">
+        <div class="container">
+            <h2>پنل مدیریت RDC</h2>
+            <div class="coin-info">
+                <h3>مدیریت محتوا</h3>
+                <p>این بخش برای به‌روزرسانی محتوای سایت استفاده می‌شود.</p>
+                
+                <h4>ویرایش متن معرفی:</h4>
+                <textarea id="introText" rows="5" style="width: 100%;">کوین RDC یک ارز دیجیتال پیشرفته با فناوری بلاکچین است...</textarea>
+                <button class="btn" style="margin-top: 10px;">ذخیره تغییرات</button>
+            </div>
+            
+            <div class="coin-info">
+                <h3>آمار سایت</h3>
+                <div class="price-info">
+                    <div class="price-card">
+                        <h3>بازدید امروز</h3>
+                        <p>1,245</p>
+                    </div>
+                    <div class="price-card">
+                        <h3>کاربران ثبت‌نامی</h3>
+                        <p>328</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- سیستم لاگین پشتیبان -->
+    <div id="supportLoginSystem" class="login-system" style="display: none;">
+        <div class="support-login">
+            <h2>ورود پشتیبان</h2>
+            <p id="supportIpMessage" style="color: var(--danger-color); display: none;">
+                دسترسی فقط از طریق IPهای استان ایلام (ایران) یا بغداد (عراق) امکان‌پذیر است
+            </p>
+            <form id="supportLoginForm">
+                <div class="input-group">
+                    <label for="supportUsername">نام کاربری</label>
+                    <input type="text" id="supportUsername" required>
+                </div>
+                <div class="input-group">
+                    <label for="supportPassword">رمز عبور</label>
+                    <input type="password" id="supportPassword" required>
+                </div>
+                <button type="submit" class="btn">ورود</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- پنل پشتیبان -->
+    <div id="supportPanel" class="support-panel">
+        <div class="container">
+            <h2>پنل پشتیبانی RDC</h2>
+            <div class="ticket-list">
+                <h3>آخرین تیکت‌ها</h3>
+                
+                <div class="ticket">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h4>مشکل در اتصال به کیف پول</h4>
+                        <span class="ticket-status status-new">جدید</span>
+                    </div>
+                    <p>ارسال شده توسط: کاربر123 | تاریخ: 1402/05/20</p>
+                    <p>سلام، نمی‌تونم به کیف پول متصل بشم...</p>
+                    <button class="btn" style="margin-top: 10px; padding: 5px 15px; font-size: 0.9rem;">پاسخ</button>
+                </div>
+                
+                <div class="ticket">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h4>سوال درباره استخراج</h4>
+                        <span class="ticket-status status-pending">در حال بررسی</span>
+                    </div>
+                    <p>ارسال شده توسط: miner2023 | تاریخ: 1402/05/19</p>
+                    <p>چطور می‌تونم RDC استخراج کنم؟...</p>
+                    <button class="btn" style="margin-top: 10px; padding: 5px 15px; font-size: 0.9rem;">پاسخ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- چت آنلاین -->
+    <div class="chat-container">
+        <div class="chat-box" id="chatBox">
+            <div class="chat-header">
+                <h3>چت پشتیبانی</h3>
+                <button id="closeChat" style="background: none; border: none; color: white; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message" style="margin-bottom: 10px; padding: 8px 12px; background: #e3f2fd; border-radius: 10px; max-width: 80%;">
+                    <p style="margin: 0;">سلام! چطور می‌تونم کمکتون کنم؟</p>
+                    <small style="display: block; text-align: left; color: #666; margin-top: 5px;">پشتیبان RDC - هم اکنون</small>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="پیام خود را بنویسید...">
+                <button id="sendMessage"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        
+        <button class="chat-btn" id="chatBtn">
+            <i class="fas fa-comments"></i> چت آنلاین
+        </button>
+    </div>
+
+    <script>
+        // اطلاعات ورود ادمین
+        const ADMIN_CREDENTIALS = {
+            username: "admin",
+            password: "RDC@1402!#" // لطفا پسورد را تغییر دهید
+        };
+        
+        // اطلاعات ورود پشتیبان
+        const SUPPORT_CREDENTIALS = {
+            username: "support",
+            password: "RDC@Supp0rt!" // لطفا پسورد را تغییر دهید
+        };
+        
+        // شبیه‌ساز تشخیص IP ادمین (استان ایلام ایران)
+        function isIlamIP() {
+            // در محیط واقعی باید از API تشخیص IP استفاده شود
+            const ilamIPs = [
+                '5.123.123.123', // مثال IP استان ایلام
+                '5.124.124.124'
+            ];
+            
+            const userIP = '5.123.123.123'; // شبیه‌سازی IP استان ایلام
+            return ilamIPs.includes(userIP);
+        }
+        
+        // شبیه‌ساز تشخیص IP پشتیبان (ایلام ایران یا بغداد عراق)
+        function isAllowedSupportIP() {
+            const allowedIPs = [
+                '5.123.123.123', // مثال IP استان ایلام
+                '5.124.124.124',
+                '37.98.123.123'  // مثال IP بغداد
+            ];
+            
+            const userIP = '5.123.123.123'; // شبیه‌سازی IP استان ایلام
+            return allowedIPs.includes(userIP);
+        }
+        
+        // سیستم مدیریت محتوا
+        document.getElementById('adminAccessBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // بررسی IP
+            if(!isIlamIP()) {
+                document.getElementById('ip-restriction-message').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('ip-restriction-message').style.display = 'none';
+                }, 3000);
+                return;
+            }
+            
+            document.getElementById('loginSystem').style.display = 'flex';
+        });
+        
+        // سیستم لاگین ادمین
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            if(username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                document.getElementById('loginSystem').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('adminAccessBtn').style.display = 'none';
+            } else {
+                alert('نام کاربری یا رمز عبور اشتباه است!');
+            }
+        });
+        
+        // سیستم مدیریت پشتیبانی
+        document.getElementById('supportAccessBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // بررسی IP
+            if(!isAllowedSupportIP()) {
+                document.getElementById('supportIpMessage').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('supportIpMessage').style.display = 'none';
+                }, 3000);
+                return;
+            }
+            
+            document.getElementById('supportLoginSystem').style.display = 'flex';
+        });
+        
+        // سیستم لاگین پشتیبان
+        document.getElementById('supportLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('supportUsername').value;
+            const password = document.getElementById('supportPassword').value;
+            
+            if(username === SUPPORT_CREDENTIALS.username && password === SUPPORT_CREDENTIALS.password) {
+                document.getElementById('supportLoginSystem').style.display = 'none';
+                document.getElementById('supportPanel').style.display = 'block';
+            } else {
+                alert('نام کاربری یا رمز عبور اشتباه است!');
+            }
+        });
+
+        // سیستم چت آنلاین
+        const chatBtn = document.getElementById('chatBtn');
+        const chatBox = document.getElementById('chatBox');
+        const closeChat = document.getElementById('closeChat');
+        const messageInput = document.getElementById('messageInput');
+        const sendMessage = document.getElementById('sendMessage');
+        const chatMessages = document.getElementById('chatMessages');
+
+        chatBtn.addEventListener('click', () => {
+            chatBox.style.display = chatBox.style.display === 'block' ? 'none' : 'block';
+        });
+
+        closeChat.addEventListener('click', () => {
+            chatBox.style.display = 'none';
+        });
+
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            messageDiv.style.marginBottom = '10px';
+            messageDiv.style.padding = '8px 12px';
+            messageDiv.style.borderRadius = '10px';
+            messageDiv.style.maxWidth = '80%';
+            messageDiv.style.marginLeft = isUser ? 'auto' : '0';
+            messageDiv.style.background = isUser ? '#e1f5fe' : '#e3f2fd';
+            messageDiv.style.textAlign = isUser ? 'left' : 'right';
+            
+            messageDiv.innerHTML = `
+                <p style="margin: 0;">${text}</p>
+                <small style="display: block; text-align: ${isUser ? 'right' : 'left'}; color: #666; margin-top: 5px;">
+                    ${isUser ? 'شما - هم اکنون' : 'پشتیبان RDC - هم اکنون'}
+                </small>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        sendMessage.addEventListener('click', () => {
+            const message = messageInput.value.trim();
+            if (message) {
+                addMessage(message, true);
+                messageInput.value = '';
+                
+                // پاسخ خودکار
+                setTimeout(() => {
+                    addMessage("پیام شما دریافت شد. همکاران ما به زودی با شما تماس خواهند گرفت.");
+                }, 1000);
+            }
+        });
+
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage.click();
+            }
+        });
+
+        // دریافت داده‌های قیمت از DexScreener API
+        async function getDexScreenerData() {
+            try {
+                const response = await fetch('https://api.dexscreener.com/latest/dex/tokens/0x527939d5c33bD19A7f0b35da399bc1D1d27Fa8e2');
+                const data = await response.json();
+                
+                if(data.pairs && data.pairs.length > 0) {
+                    const pair = data.pairs[0];
+                    document.getElementById('dex-price').textContent = formatPrice(pair.priceUsd);
+                    
+                    const change24h = pair.priceChange.h24;
+                    const changeElement = document.getElementById('dex-change');
+                    changeElement.textContent = change24h.toFixed(2) + '%';
+                    
+                    if(change24h >= 0) {
+                        changeElement.className = 'price-up';
+                    } else {
+                        changeElement.className = 'price-down';
+                    }
+                    
+                    document.getElementById('dex-volume').textContent = '$' + formatNumber(pair.volume.h24);
+                }
+            } catch (error) {
+                console.error('خطا در دریافت داده‌های DexScreener:', error);
+            }
+        }
+        
+        // شبیه‌سازی داده‌های Poocoin
+        function updatePooCoinData() {
+            const price = (Math.random() * 0.01).toFixed(6);
+            const change = (Math.random() * 20 - 10).toFixed(2);
+            
+            document.getElementById('poo-price').textContent = price;
+            
+            const changeElement = document.getElementById('poo-change');
+            changeElement.textContent = change + '%';
+            
+            if(change >= 0) {
+                changeElement.className = 'price-up';
+            } else {
+                changeElement.className = 'price-down';
+            }
+            
+            document.getElementById('poo-liquidity').textContent = '$' + formatNumber(Math.random() * 100000);
+        }
+        
+        // توابع کمکی
+        function formatNumber(num) {
+            return new Intl.NumberFormat('en-US').format(num.toFixed(2));
+        }
+        
+        function formatPrice(num) {
+            return new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 6,
+                maximumFractionDigits: 6
+            }).format(num);
+        }
+        
+        // بارگذاری اولیه داده‌ها
+        getDexScreenerData();
+        updatePooCoinData();
+        
+        // بروزرسانی هر 30 ثانیه
+        setInterval(() => {
+            getDexScreenerData();
+            updatePooCoinData();
+        }, 30000);
+    </script>
+</body>
+</html>
